@@ -17,12 +17,14 @@ Choose the method for your system:
 
 - [Install a distribution package](#2-install-noctalia-greeter) on Arch Linux,
   CachyOS, KaOS, Fedora, openSUSE, Debian, or Ubuntu.
+- For Void Linux, the XBPS package is pending; see the
+  [Void Linux details](#void-linux).
 - [Build from source](/greeter/building-from-source/) if no package is available.
 - Follow the separate [NixOS declarative setup](#nixos-declarative-setup) on
   NixOS. Do not follow the imperative service steps in sections 3–6.
 
-Sections 3–6 assume systemd. With another init system, configure greetd in
-section 3, then skip to [Other init systems](#other-init-systems).
+On Void Linux, configure greetd in section 3, then use the runit instructions in
+the Void Linux section above to enable and restart the service.
 
 :::note[Package ownership]
 The Noctalia team maintains the source build, project flake, and AUR packages.
@@ -161,6 +163,38 @@ sudo apt install noctalia-greeter
 ```
 </TabItem>
 </Tabs>
+
+### Void Linux {#void-linux}
+
+The Noctalia Greeter XBPS package has not been merged into Void Linux's package
+repository yet. Track its status in
+[void-packages PR #63053](https://github.com/void-linux/void-packages/pull/63053).
+For user-maintained repositories, check the pinned posts in the
+[#voidlinux Discord channel](https://discord.com/channels/1401598189823590460/1488259645695983797).
+In the meantime, follow [Build from source](#build-from-source) below.
+
+After building and installing the greeter, set `command` in the `[default_session]`
+section of `/etc/greetd/config.toml` to:
+
+```toml
+command = "/usr/bin/noctalia-greeter-session"
+```
+
+Keep any existing `user` setting and other greetd configuration.
+
+Void Linux uses runit. Disable any other display manager before enabling greetd
+at boot:
+
+```sh
+sudo ln -s /etc/sv/greetd /var/service/
+```
+
+If greetd is already enabled, restart it after changing its configuration:
+
+```sh
+sudo sv restart greetd
+```
+
 ## 3. Configure greetd
 
 If using the Debian or Ubuntu packages, `greetd` will have already been
@@ -420,23 +454,6 @@ An example `services` section of the system configuration would look something l
 If no package is available for your distribution, follow
 [Building from source](/greeter/building-from-source/). After installing, return to
 [Configure greetd](#3-configure-greetd) to complete the setup.
-
-## Other init systems
-
-Disable any other display manager through your init system before enabling its
-greetd service. Service setup varies by distribution.
-
-On runit, restart greetd after changing `/etc/greetd/config.toml`:
-
-```sh
-sudo sv restart greetd
-```
-
-On systemd, restart greetd after later configuration changes with:
-
-```sh
-sudo systemctl restart greetd
-```
 
 ## Optional next steps
 

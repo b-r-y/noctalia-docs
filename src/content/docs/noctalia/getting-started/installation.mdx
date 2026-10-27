@@ -17,6 +17,7 @@ Noctalia is available on the following distributions. Choose your platform below
 - [GNU Guix](#guix)
 - [Debian](#debian) (including Ubuntu)
 - [Chimera Linux](#chimera)
+- [Void Linux](#void) (manual installation; package pending)
 
 You can also [install manually](#manual-install) on any other Linux distribution.
 
@@ -263,6 +264,18 @@ apk add noctalia
 
 ---
 
+## Void Linux {#void}
+
+The Noctalia XBPS package has not been merged into Void Linux's package
+repository yet. Track its status in
+[void-packages PR #63084](https://github.com/void-linux/void-packages/pull/63084).
+For user-maintained repositories, check the pinned posts in the
+[#voidlinux Discord channel](https://discord.com/channels/1401598189823590460/1488259645695983797).
+In the meantime, follow the [manual installation instructions](#manual-install)
+below.
+
+---
+
 ## Manual Installation {#manual-install}
 
 :::caution[Not Recommended]
@@ -322,6 +335,37 @@ If you prefer to install Noctalia locally or want more control over the installa
       libxml2-dev libjemalloc-dev git
 
     ```
+  </TabItem>
+  <TabItem label="Void Linux">
+    For the most up-to-date package requirements, check the project's
+    [PACKAGING.md](https://github.com/noctalia-dev/noctalia/blob/main/PACKAGING.md).
+
+    **Build dependencies:**
+
+    ```bash
+    sudo xbps-install -S base-devel meson just pkg-config \
+      basu-devel cairo-devel fontconfig-devel freetype-devel harfbuzz-devel \
+      jemalloc-devel libcurl-devel libepoxy-devel libglvnd-devel libmd4c-devel \
+      libqalculate-devel librsvg-devel libwebp-devel libxkbcommon-devel \
+      libsecret-devel libsodium-devel libical-devel libjxl-devel libsndfile-devel \
+      libxml2-devel MesaLib-devel json-c++ pam-devel pango-devel \
+      pipewire-devel polkit-devel sdbus-c++-devel stb tomlplusplus-devel \
+      wayland-devel wayland-protocols wireplumber-devel
+    ```
+
+    **Runtime dependencies:**
+
+    ```bash
+    sudo xbps-install -S basu cairo fontconfig freetype harfbuzz \
+      libcurl libepoxy libglvnd libmd4c libqalculate librsvg libwebp \
+      libxkbcommon libsecret libsodium libical libjxl libsndfile libxml2 \
+      MesaLib pam pango pipewire polkit sdbus-c++ wayland wireplumber
+    ```
+
+    The Void package template lists these development packages as build
+    dependencies. The runtime command installs their shared-library packages;
+    `jemalloc` is optional and can be installed separately for reduced memory
+    fragmentation.
   </TabItem>
 </Tabs>
 

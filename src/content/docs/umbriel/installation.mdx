@@ -85,6 +85,67 @@ sudo apt install umbriel
 
 The repository provides `amd64` and `arm64` packages only.
 
+## Void Linux
+
+The Umbriel and XDG Desktop Portal for Umbriel XBPS packages have not been
+merged into Void Linux's package repository yet. For user-maintained
+repositories, check the pinned posts in the
+[#voidlinux Discord channel](https://discord.com/channels/1401598189823590460/1488259645695983797).
+In the meantime, follow the [Manual build](#manual-build) instructions below.
+
+### Void Linux dependencies
+
+The Void package templates list build dependencies but do not declare explicit
+runtime dependencies. Install the runtime libraries and build dependencies for
+each component you plan to build. For the latest Umbriel packaging requirements,
+see the project's
+[`PACKAGING.md`](https://github.com/noctalia-dev/umbriel/blob/main/PACKAGING.md).
+
+#### Umbriel
+
+Runtime libraries:
+
+```sh
+sudo xbps-install -S cairo eudev-libudev lcms2 libdisplay-info libdrm \
+  libglvnd libinput libxcb libxkbcommon MesaLib pango pixman wayland \
+  wlroots0.20 xcb-util-wm
+```
+
+Build dependencies:
+
+```sh
+sudo xbps-install -S base-devel meson ninja just pkg-config git \
+  cairo-devel eudev-libudev-devel jemalloc-devel json-c++ lcms2-devel \
+  libdisplay-info-devel libdrm-devel libglvnd-devel libinput-devel libxcb-devel \
+  libxkbcommon-devel MesaLib-devel pango-devel pixman-devel tomlplusplus-devel \
+  wayland-devel wayland-protocols wlroots0.20-devel xcb-util-wm-devel
+```
+
+`jemalloc` is optional. Xwayland is also optional and only needed for X11
+applications. To enable screen capture and sharing, build and install the portal
+backend below.
+
+#### XDG Desktop Portal for Umbriel
+
+The portal backend needs the `xdg-desktop-portal` service and a working D-Bus
+session. Its current build dependencies are documented in the portal project's
+[README](https://github.com/noctalia-dev/xdg-desktop-portal-umbriel/blob/main/README.md#dependencies).
+
+Runtime dependencies:
+
+```sh
+sudo xbps-install -S cairo dbus gtk4 libdrm libgbm pipewire sdbus-c++ \
+  wayland xdg-desktop-portal
+```
+
+Build dependencies:
+
+```sh
+sudo xbps-install -S base-devel meson ninja pkg-config git wayland-devel \
+  cairo-devel json-c++ libdrm-devel libgbm-devel pipewire-devel \
+  sdbus-c++-devel tomlplusplus-devel wayland-protocols gtk4-devel
+```
+
 ## GNU Guix
 
 Umbriel and its XDG portal are available through the third-party [`midnight`](https://codeberg.org/stampede/midnight) Guix channel. Add the channel to `~/.config/guix/channels.scm`:

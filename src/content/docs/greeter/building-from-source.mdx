@@ -69,6 +69,11 @@ sudo apt install meson g++ just \
 
 ### Void Linux
 
+For the most up-to-date package requirements, check the project's
+[PACKAGING.md](https://github.com/noctalia-dev/noctalia-greeter/blob/main/PACKAGING.md).
+
+**Build dependencies:**
+
 ```sh
 sudo xbps-install meson ninja pkg-config git \
   greetd dbus \
@@ -77,6 +82,12 @@ sudo xbps-install meson ninja pkg-config git \
   pango-devel fontconfig-devel freetype-devel harfbuzz-devel \
   tomlplusplus-devel nlohmann-json-devel stb \
   libxkbcommon-devel libwebp-devel libjxl-devel librsvg-devel libxml2-devel
+```
+
+**Runtime dependencies:**
+
+```sh
+sudo xbps-install cage dbus greetd polkit wlr-randr
 ```
 
 ## Build and install
